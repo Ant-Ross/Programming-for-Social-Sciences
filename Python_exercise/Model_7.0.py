@@ -1,0 +1,92 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct  2 18:54:15 2018
+
+@author: mcyitlr4
+"""
+
+import random
+import matplotlib.pyplot
+import matplotlib.animation
+import agentframework
+import csv
+
+# Reading environment
+f = open('env.txt', newline='') 
+reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
+environment = []
+for row in reader:				# A list of rows
+    rowlist = []	
+    for value in row:				# A list of value
+        rowlist.append(value)
+        #print(value) 				# Floats   
+    environment.append(rowlist)  
+f.close() 	# Don't close until you are done with the reader;
+		# the data is read on request.
+
+    
+# Parameters
+agents = []
+num_of_agents = 25
+num_of_iterations = 15
+neighbourhood = 20
+
+# Plotting settings?
+fig = matplotlib.pyplot.figure(figsize=(7, 7))
+ax = fig.add_axes([0, 0, 1, 1])
+
+
+# creating agents in a container
+for i in range(num_of_agents):
+    agents.append(agentframework.Agent(environment, agents, neighbourhood))
+       
+#Movement, eating and sharing     
+# Defining a function to be called in the animation commando further below
+def update(frame_number):
+    
+    fig.clear() 
+       
+    for j in range(num_of_agents):
+        random.shuffle(agents) # Shuffles the list in every new iteration   
+        for i in range(num_of_iterations): 
+            agents[j].move()
+            agents[j].eat()
+            agents[j].share_with_neighbours(neighbourhood)
+            
+    for i in range(num_of_agents):
+        
+        matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
+        print(agents[i].x,agents[i].y) 
+    
+    matplotlib.pyplot.ylim(0, 100)
+    matplotlib.pyplot.xlim(0, 100)
+    matplotlib.pyplot.imshow(environment)    
+       
+animation = matplotlib.animation.FuncAnimation(fig, update, interval=1)
+
+#matplotlib.pyplot.imshow(environment) 
+matplotlib.pyplot.show()
+        
+                    
+# Plotting agents
+#matplotlib.pyplot.ylim(0, 99)
+#matplotlib.pyplot.xlim(0, 99)
+#matplotlib.pyplot.imshow(environment) 
+#for i in range(num_of_agents):
+#    matplotlib.pyplot.scatter(agents[i].x,agents[i].y)
+#matplotlib.pyplot.show()
+
+#for i in range(num_of_agents):
+#    print(agents[i].store)
+
+
+
+#Distance between all of the agents. Adding timing distance combinations
+
+#start = time.clock()
+#for j in range(num_of_agents):
+#    for i in range(num_of_agents):
+#        distance_between(i,j)
+#end = time.clock()
+#
+#print("time = " + str(end - start))    
