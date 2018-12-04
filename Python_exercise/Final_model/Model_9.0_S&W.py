@@ -25,7 +25,7 @@ for row in reader:				# A list of rows
 f.close() 	# Don't close until you are done with the reader;
 		# the data is read on request.
 
-# Parameters
+# Setting the model parameters
 agents = []
 wolves = []
 num_of_agents = 15
@@ -38,7 +38,7 @@ fig = matplotlib.pyplot.figure(figsize=(7, 7))
 ax = fig.add_axes([0, 0, 1, 1])
 
 
-# creating sheeps and wolves
+# Creating sheeps and wolves
 for i in range(num_of_agents):
     agents.append(agentframework_v2.Agent(environment, agents, neighbourhood))
     
@@ -47,7 +47,7 @@ for i in range(num_of_wolves):
     
     
        
-#Movement, eating and sharing     
+#Moving, eating and sharing     
 # Defining a function to be called in the animation commando further below
     
 carry_on = True    
@@ -56,7 +56,7 @@ def update(frame_number):
     fig.clear()
     global carry_on
     
-    if len(agents) == 0: #it will check if every agent has eaten over n value 
+    if len(agents) == 0: # Stopping condition. The model will stop when all the sheeps have been eaten 
         carry_on=False # when the above condition is met it will stop
         print("stopping condition")
        
@@ -83,7 +83,7 @@ def update(frame_number):
         matplotlib.pyplot.scatter(wolves[i].x,wolves[i].y, color='black')   
     
         
-    matplotlib.pyplot.ylim(0, 300) #modifyed so they use the whole image
+    matplotlib.pyplot.ylim(0, 300) #modifyed so they use the whole environment (image)
     matplotlib.pyplot.xlim(0, 300)
     matplotlib.pyplot.imshow(environment) 
     
@@ -96,15 +96,10 @@ def gen_function(b = [0]):
         yield a			# Returns control and waits next call.
         a = a + 1        
         #print(a)   
-
     
-#animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False,frames=num_of_iterations) 
-                                              
+# This line creates the animation.                                              
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1000, frames=gen_function, repeat=False)
 matplotlib.pyplot.show()
         
 print(len(agents))                       
-
-#for i in range(num_of_agents):
- #   print(agents[i].store)
 
